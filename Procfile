@@ -1,1 +1,1 @@
-web: muffin example --workers=2
+web: muffin example run --workers=2
