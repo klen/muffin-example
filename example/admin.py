@@ -22,6 +22,7 @@ def authorize(request):
 
 @app.register
 class UserAdmin(PWAdminHandler):
+    can_create = can_edit = can_delete = app.cfg.CONFIG == 'example.config.debug'
     model = User
     columns = 'id', 'created', 'username', 'email', 'is_super'
     form_meta = {
@@ -31,6 +32,7 @@ class UserAdmin(PWAdminHandler):
 
 @app.register
 class TokenAdmin(PWAdminHandler):
+    can_create = can_edit = can_delete = app.cfg.CONFIG == 'example.config.debug'
     model = Token
 
 
