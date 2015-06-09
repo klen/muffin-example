@@ -19,9 +19,9 @@ clean:
 #  Development
 # =============
 
-$(VIRTUAL_ENV): requirements.txt
+$(VIRTUAL_ENV): requirements-local.txt
 	@[ -d $(VIRTUAL_ENV) ] || virtualenv --no-site-packages --python=python3 $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/pip install -r requirements.txt
+	@$(VIRTUAL_ENV)/bin/pip install -r requirements-local.txt
 	@touch $(VIRTUAL_ENV)
 
 $(VIRTUAL_ENV)/bin/py.test: $(VIRTUAL_ENV)

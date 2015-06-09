@@ -1,0 +1,8 @@
+mixer           == 5.1.2
+muffin          == 0.0.90
+muffin_admin    == 0.0.10
+muffin_jinja2   == 0.0.7
+muffin_oauth    == 0.0.11
+muffin_peewee   == 0.0.27
+muffin_session  == 0.0.5
+wtf-peewee
