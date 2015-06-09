@@ -34,4 +34,4 @@ OAUTH_CLIENTS = {
 PEEWEE_MIGRATIONS_PATH = 'example/migrations'
 PEEWEE_CONNECTION = os.environ.get('DATABASE_URL', 'sqlite:///example.sqlite')
 DEBUGTOOLBAR_EXCLUDE = ['/static']
-DEBUGTOOLBAR_HOSTS = ['0.0.0.0']
+DEBUGTOOLBAR_HOSTS = ['0.0.0.0/0']

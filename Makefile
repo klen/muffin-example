@@ -45,4 +45,4 @@ $(CURDIR)/example.sqlite: $(VIRTUAL_ENV)
 
 .PHONY: run
 run: $(CURDIR)/example.sqlite
-	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug run --timeout=300 --pid=$(CURDIR)/pid
+	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug run --timeout=600 --pid=$(CURDIR)/pid
