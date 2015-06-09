@@ -15,6 +15,7 @@ PLUGINS = (
     'muffin_session',
     'muffin_oauth',
     'muffin_admin',
+    'muffin_debugtoolbar',
 )
 
 STATIC_FOLDERS = 'example/static',
@@ -32,3 +33,4 @@ OAUTH_CLIENTS = {
 }
 PEEWEE_MIGRATIONS_PATH = 'example/migrations'
 PEEWEE_CONNECTION = os.environ.get('DATABASE_URL', 'sqlite:///example.sqlite')
+DEBUGTOOLBAR_EXCLUDE = ['/static']
