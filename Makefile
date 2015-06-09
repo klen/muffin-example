@@ -25,13 +25,13 @@ $(VIRTUAL_ENV): requirements-local.txt
 	@touch $(VIRTUAL_ENV)
 
 $(VIRTUAL_ENV)/bin/py.test: $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/pip install pytest
+	@$(VIRTUAL_ENV)/bin/pip install pytest webtest
 	@touch $(VIRTUAL_ENV)/bin/py.test
 
 .PHONY: test
 # target: test - Runs tests
 test: $(VIRTUAL_ENV)/bin/py.test
-	@$(VIRTUAL_ENV)/bin/py.test -xs example
+	@$(VIRTUAL_ENV)/bin/py.test -xs example/tests.py
 
 .PHONY: t
 t: test

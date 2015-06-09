@@ -8,6 +8,7 @@ OAUTH_CLIENTS = {
         'client_secret': '21ff23d9f1cad775daee6a38d230e1ee05b04f7c',
     }
 }
+OAUTH_REDIRECT_URI = None
 
 # DEBUG = True
 LOG_LEVEL = 'DEBUG'

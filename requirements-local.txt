@@ -3,7 +3,7 @@ muffin              == 0.0.90
 muffin-debugtoolbar == 0.0.2
 muffin-admin        == 0.0.10
 muffin-jinja2       == 0.0.7
-muffin-oauth        == 0.0.11
+muffin-oauth        == 0.0.12
 muffin-peewee       == 0.0.27
 muffin-session      == 0.0.5
 wtf-peewee

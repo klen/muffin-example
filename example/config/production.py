@@ -31,6 +31,7 @@ OAUTH_CLIENTS = {
         'client_secret': 'e2bdda59f9da853ec39d0d1e07baade595f50202',
     }
 }
+OAUTH_REDIRECT_URI = 'https://muffin-py.herokuapp.com/oauth/github'
 PEEWEE_MIGRATIONS_PATH = 'example/migrations'
 PEEWEE_CONNECTION = os.environ.get('DATABASE_URL', 'sqlite:///example.sqlite')
 DEBUGTOOLBAR_EXCLUDE = ['/static']
