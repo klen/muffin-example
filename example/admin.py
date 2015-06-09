@@ -4,7 +4,7 @@ import muffin
 from muffin_admin.peewee import PWAdminHandler
 
 from example import app
-from example.models import User, Test, Token
+from example.models import User, Test
 
 
 @app.ps.admin.authorization
@@ -24,16 +24,10 @@ def authorize(request):
 class UserAdmin(PWAdminHandler):
     can_create = can_edit = can_delete = app.cfg.CONFIG == 'example.config.debug'
     model = User
-    columns = 'id', 'created', 'username', 'email', 'is_super'
+    columns = 'id', 'created', 'username', 'is_super'
     form_meta = {
         'exclude': ['password'],
     }
-
-
-@app.register
-class TokenAdmin(PWAdminHandler):
-    can_create = can_edit = can_delete = app.cfg.CONFIG == 'example.config.debug'
-    model = Token
 
 
 @app.register

@@ -24,7 +24,9 @@ STATIC_FOLDERS = 'example/static',
 # ==============
 
 SESSION_SECRET = 'SecretHere'
+
 JINJA2_TEMPLATE_FOLDERS = 'example/templates',
+
 OAUTH_CLIENTS = {
     'github': {
         'client_id': 'b212c829c357ea0bd950',
@@ -32,7 +34,10 @@ OAUTH_CLIENTS = {
     }
 }
 OAUTH_REDIRECT_URI = 'https://muffin-py.herokuapp.com/oauth/github'
+
 PEEWEE_MIGRATIONS_PATH = 'example/migrations'
 PEEWEE_CONNECTION = os.environ.get('DATABASE_URL', 'sqlite:///example.sqlite')
+
 DEBUGTOOLBAR_EXCLUDE = ['/static']
 DEBUGTOOLBAR_HOSTS = ['0.0.0.0/0']
+DEBUGTOOLBAR_INTERCEPT_REDIRECTS = False
