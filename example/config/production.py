@@ -1,3 +1,5 @@
+import os
+
 # Gunicorn
 # ========
 bind = '127.0.0.1:5000'
@@ -24,8 +26,9 @@ SESSION_SECRET = 'SecretHere'
 JINJA2_TEMPLATE_FOLDERS = 'example/templates',
 OAUTH_CLIENTS = {
     'github': {
-        'client_id': 'b6281b6fe88fa4c313e6',
-        'client_secret': '21ff23d9f1cad775daee6a38d230e1ee05b04f7c',
+        'client_id': 'b212c829c357ea0bd950',
+        'client_secret': 'e2bdda59f9da853ec39d0d1e07baade595f50202',
     }
 }
 PEEWEE_MIGRATIONS_PATH = 'example/migrations'
+PEEWEE_CONNECTION = os.environ.get('DATABASE_URL', 'sqlite:///example.sqlite')
