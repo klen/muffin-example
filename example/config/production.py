@@ -42,5 +42,6 @@ DEBUGTOOLBAR_EXCLUDE = ['/static']
 DEBUGTOOLBAR_HOSTS = ['0.0.0.0/0']
 DEBUGTOOLBAR_INTERCEPT_REDIRECTS = False
 DEBUGTOOLBAR_ADDITIONAL_PANELS = [
-    'muffin_peewee.debugtoolbar:PeeweeDebugPanel',
+    'muffin_peewee',
+    'muffin_jinja2',
 ]
