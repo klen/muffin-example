@@ -41,3 +41,6 @@ PEEWEE_CONNECTION = os.environ.get('DATABASE_URL', 'sqlite:///example.sqlite')
 DEBUGTOOLBAR_EXCLUDE = ['/static']
 DEBUGTOOLBAR_HOSTS = ['0.0.0.0/0']
 DEBUGTOOLBAR_INTERCEPT_REDIRECTS = False
+DEBUGTOOLBAR_ADDITIONAL_PANELS = [
+    'muffin_peewee.debugtoolbar:PeeweeDebugPanel',
+]
