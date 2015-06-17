@@ -119,3 +119,33 @@ def oauth(request):
 def db_async(request):
     results = yield from app.peewee.query(Test.select())
     return [t.data for t in results]
+
+
+SOCKETS = []
+
+
+@app.register('/ws')
+def websocket(request):
+    user = yield from app.ps.session.load_user(request)
+    user = user and user.username or 'anonimous'
+    ws = muffin.WebSocketResponse()
+    ws.start(request)
+    for ws_ in SOCKETS:
+        ws_.send_str('%s joined' % user)
+
+    SOCKETS.append(ws)
+
+    while True:
+        msg = yield from ws.receive()
+        if msg.tp == muffin.MsgType.text:
+            for ws_ in SOCKETS:
+                if ws_ is not ws:
+                    ws_.send_str("%s: %s" % (user, msg.data))
+            continue
+        break
+
+    SOCKETS.remove(ws)
+    for ws_ in SOCKETS:
+        ws_.send_str('%s disconnected' % user)
+
+    return ws
