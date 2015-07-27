@@ -1,5 +1,4 @@
 """ Admin interface. """
-
 import muffin
 from muffin_admin.peewee import PWAdminHandler
 
