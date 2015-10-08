@@ -16,7 +16,7 @@ def add_constant():
 @app.ps.session.user_loader
 def get_user(user_id):
     """ This provides a user loading procedure to the application. """
-    return User.select().where(User.id == user_id).get()
+    return User.get(User.id == user_id)
 
 
 @app.register('/html')

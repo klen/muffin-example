@@ -1,9 +1,9 @@
 mixer               == 5.1.10
-muffin              >= 0.0.92
-muffin-admin        >= 0.0.13
-muffin-debugtoolbar >= 0.0.4
-muffin-jinja2       >= 0.0.8
-muffin-oauth        >= 0.0.14
-muffin-peewee       >= 0.0.35
-muffin-session      >= 0.0.5
+muffin              >= 0.1.6
+muffin-admin        >= 0.1.3
+muffin-debugtoolbar >= 0.1.2
+muffin-jinja2       >= 0.1.0
+muffin-oauth        >= 0.0.15
+muffin-peewee       >= 0.3.0
+muffin-session      >= 0.0.8
 wtf-peewee
