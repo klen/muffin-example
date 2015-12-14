@@ -1,4 +1,4 @@
-""" The application's models. """
+"""The application's models."""
 
 import datetime as dt
 

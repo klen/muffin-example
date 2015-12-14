@@ -1,7 +1,6 @@
 import muffin
-import re
-from example import app
 
+from example import app
 from example.models import User, Test, Token
 
 
@@ -63,7 +62,7 @@ def index(request):
 
 
 # app.register supports any regexp in paths
-@app.register(re.compile('/login/?'), methods='POST')
+@app.register('/login/?', methods='POST')
 def login(request):
     """ Implement user's login. """
     data = yield from request.post()
