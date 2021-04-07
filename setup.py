@@ -1,12 +1,13 @@
+"""Setup the application."""
+
+from pathlib import Path
+
 from setuptools import setup
 
 
-setup(name='muffin-example',
-      version='0.1',
-      description='Muffin Framework example',
-      url='http://github.com/klen/muffin-example',
-      author='Kirill Klenov',
-      author_email='horneds@gmail.com',
-      license='MIT',
-      packages=['example'],
-      zip_safe=False)
+requirements = (Path(__file__).parent / 'requirements.txt').read_text().split('\n')
+
+
+setup(
+    install_requires=[line for line in requirements if line and not line.startswith('#')]
+)

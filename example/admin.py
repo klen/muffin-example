@@ -1,43 +1,58 @@
-""" Setup admin interface. """
-import muffin
-from muffin_admin.peewee import PWAdminHandler
+"""Setup admin interface."""
 
-from example import app
-from example.models import User, Test
+from muffin_admin import Plugin as Admin, PWAdminHandler
 
-
-@app.ps.admin.authorization
-def authorize(request):
-    """ Base authoriazation for every admin handler. Checks for current user's permissions.
-
-    It can be redifined for each handler.
-
-    """
-    user = yield from app.ps.session.load_user(request)
-    if not user or not user.is_super:
-        raise muffin.HTTPFound('/')
-    return user
+from . import app, session
+from .models import User, Message
 
 
-@app.register
-class TestAdmin(PWAdminHandler):
-
-    """Simplest example."""
-
-    model = Test
+admin = Admin(app)
 
 
-@app.register
-class UserAdmin(PWAdminHandler):
+@admin.check_auth
+async def authorize(request):
+    """Authorize users to access the admin."""
+    user = await session.load_user(request)
+    if user and user.is_super:
+        return user
 
-    """View registered users."""
 
-    model = User
-    columns = 'id', 'created', 'username', 'is_super'
-    filters = 'username', 'is_super'
-    form_meta = {
-        'exclude': ['password'],
-    }
+@admin.get_identity
+async def ident(request):
+    """Get an identity for the current user.."""
+    user = await session.load_user(request)
+    if user:
+        return {
+            'id': user.id,
+            'fullName': user.email,
+        }
 
-    # Disable changes on production
-    can_create = can_edit = can_delete = app.cfg.CONFIG == 'example.config.debug'
+
+@admin.route
+class UsersAdmin(PWAdminHandler):
+    """Manage users."""
+
+    class Meta:
+        """Tune the handler."""
+
+        icon = "People"
+
+        model = User
+        filters = 'email', 'is_super'
+        schema_meta = {
+            'load_only': ('password',),
+        }
+
+
+@admin.route
+class MessagesAdmin(PWAdminHandler):
+    """Manage messages."""
+
+    class Meta:
+        """Tune the handler."""
+
+        icon = "Message"
+        references = {'user': 'user.email'}
+
+        model = Message
+        filters = 'user',

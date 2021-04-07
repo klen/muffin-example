@@ -1,31 +1,30 @@
-"""The application's commands."""
+"""Setup the application's CLI commands."""
 
 from example import app
 
 
-@app.manage.command
+@app.manage
 def hello(name, upper=False):
-    """ Write command help text here.
+    """Write command help text here.
 
     :param name:  Write your name
     :param upper: Use uppercase
 
     """
-    greetings = 'Hello %s!' % name
+    greetings = f"Hello {name}!"
     if upper:
         greetings = greetings.upper()
     print(greetings)
 
 
-@app.manage.command
-def example_data():
-    """ Create example users. """
+@app.manage
+def example_users():
+    """Create users for the example."""
     from mixer.backend.peewee import Mixer
-    from muffin.utils import generate_password_hash
     from example.models import User
 
     mixer = Mixer(commit=True)
     mixer.guard(User.email == 'user@muffin.io').blend(
-        User, email='user@muffin.io', password=generate_password_hash('pass'))
+        User, email='user@muffin.io', password=User.generate_password('pass'))
     mixer.guard(User.email == 'admin@muffin.io').blend(
-        User, email='admin@muffin.io', password=generate_password_hash('pass'), is_super=True)
+        User, email='admin@muffin.io', password=User.generate_password('pass'), is_super=True)

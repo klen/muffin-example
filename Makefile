@@ -1,4 +1,4 @@
-VIRTUAL_ENV=$(shell echo "$${VIRTUAL_ENV:-'.env'}")
+VIRTUAL_ENV ?= env
 
 all: $(VIRTUAL_ENV)
 
@@ -19,30 +19,28 @@ clean:
 #  Development
 # =============
 
-$(VIRTUAL_ENV): requirements-local.txt
-	@[ -d $(VIRTUAL_ENV) ] || virtualenv --no-site-packages --python=python3 $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/pip install -r requirements-local.txt
+$(VIRTUAL_ENV): requirements.txt
+	@[ -d $(VIRTUAL_ENV) ] || python -m venv $(VIRTUAL_ENV)
+	@$(VIRTUAL_ENV)/bin/pip install -e .
 	@touch $(VIRTUAL_ENV)
 
-$(VIRTUAL_ENV)/bin/py.test: $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/pip install pytest webtest
-	@touch $(VIRTUAL_ENV)/bin/py.test
-
-.PHONY: test
+.PHONY: t test
 # target: test - Runs tests
-test: $(VIRTUAL_ENV)/bin/py.test
-	@$(VIRTUAL_ENV)/bin/py.test -xs example/tests.py
-
-.PHONY: t
-t: test
+t test: $(VIRTUAL_ENV)
+	@$(VIRTUAL_ENV)/bin/pytest -xsv tests
 
 .PHONY: db
-db: $(CURDIR)/example.sqlite
-
-$(CURDIR)/example.sqlite: $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug migrate
-	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug example_data
+db:
+	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug pw_migrate
+	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug example_users
 
 .PHONY: run
-run: $(CURDIR)/example.sqlite
-	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug run --timeout=600 --pid=$(CURDIR)/pid
+run: $(VIRTUAL_ENV)
+	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug pw_migrate
+	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug example_users
+	@$(VIRTUAL_ENV)/bin/uvicorn --reload --reload-dir $(CURDIR)/example --port 5000 example:app
+
+.PHONY: shell
+shell: $(VIRTUAL_ENV)
+	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug shell
+

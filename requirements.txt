@@ -1,3 +1,15 @@
--r requirements-local.txt
+uvicorn[standard]
 
-psycopg2
+aiofile
+muffin          >= 0.65.0
+muffin-admin    >= 0.22.2
+muffin-jinja2   >= 0.10.1
+muffin-oauth    >= 0.9.4
+muffin-peewee   >= 1.7.5
+muffin-rest     >= 2.6.1
+muffin-session  >= 0.10.12
+
+mixer
+pytest
+pytest-aio[trio]
+pytest-mypy

@@ -4,6 +4,7 @@ import datetime as dt
 import peewee as pw
 
 
+# Just an example
 def migrate(migrator, database, **kwargs):
     """ Write your migrations here.
 
@@ -20,23 +21,12 @@ def migrate(migrator, database, **kwargs):
 
     """
 
-    @migrator.create_table
-    class User(pw.Model):
-        username = pw.CharField()
-        email = pw.CharField(unique=True)
-        password = pw.CharField()
-        is_super = pw.BooleanField(default=False)
+    migrator.add_columns('user',
+                         created=pw.DateTimeField(default=dt.datetime.now),
+                         drop_me=pw.CharField(default=''))
 
-    @migrator.create_table
-    class Test(pw.Model):
-        data = pw.CharField()
+    migrator.rename_column('user', 'drop_me', 'new_drop_me')
 
-    @migrator.create_table
-    class Token(pw.Model):
-        provider = pw.CharField()
-        token = pw.CharField()
-        token_secret = pw.CharField(null=True)
-        user = pw.ForeignKeyField(User)
+    migrator.add_index('user', 'new_drop_me')
 
-        class Meta:
-            indexes = (('token', 'provider'), True),
+    migrator.drop_columns('user', 'new_drop_me')

@@ -5,35 +5,32 @@
 
     <h1> Hello {{ user and user.email or 'anonimous' }}! </h1>
 
-    <h3> The application {{ MUFFIN }} </h3>
+    <h3> This is an example application for <a href="https://github.com/klen/muffin">Muffin</a> Framework</h3>
 
     {% if not user %}
-        <p> Login as user <i>(user@muffin.io:pass)</i> </p>
-        <p> Login as admn <i>(admin@muffin.io:pass)</i> </p>
-        <p> Or login from <a href="/oauth/github"> Github </a> </p>
+        <ul>
+            <li> Login as user <a href="/login?email=user@muffin.io&password=pass">(user@muffin.io:pass)</a> </li>
+            <li> Login as admin <a href="/login?email=admin@muffin.io&password=pass">(admin@muffin.io:pass)</a> </li>
+            <li> Or login from <a href="/oauth/github"> Github </a> </li>
+        </ul>
     {% endif %}
 
     {% if user.is_super %}
-        <p> See <a href="/admin/user"> Admin interface </a> </p>
+        <p> See <a href="/admin"> Admin interface </a> </p>
     {% endif %}
 
     <h3>WebSocket Chat</h3>
-    <div class="row">
+    <div>
         <button id="connect" class="btn btn-success">Connect</button>
         &nbsp;|&nbsp;Status: <span id="status">disconnected</span>
     </div>
 
-    <div id="log" style="width:40em;height:15em;overflow:auto;margin:1em -15px;" class="row form-control">
-    </div>
+    <form id="chatform" onsubmit="return false;" class="input-group mt-3">
+        <input id="text" type="text" placeholder="Type message" class="form-control"/>
+        <button id="send" type="button" class="btn btn-outline-secondary">Send</button>
+    </form>
 
-    <div class="row">
-        <form id="chatform" onsubmit="return false;" class="form form-inline">
-            <div class="form-group">
-                <input id="text" type="text" class="form-control"/>
-                <input id="send" type="button" value="Send" class="form-control"/>
-            </div>
-        </form>
-    </div>
+    <div id="chat" style="height:30em;overflow-y:scroll" class="form-control my-2"></div>
 
 {% endblock %}
 
@@ -42,81 +39,6 @@
 
     {{ super() }}
 
-    <script language="javascript" type="text/javascript">
-        $(function() {
-            var conn = null;
-
-            function log(msg) {
-                var control = $('#log');
-                control.html(control.html() + msg + '<br/>');
-                control.scrollTop(control.scrollTop() + 1000);
-            }
-
-            function connect() {
-                disconnect();
-                var wsUri = (window.location.protocol=='https:'&&'wss://'||'ws://')+window.location.host+'/ws';
-                conn = new WebSocket(wsUri);
-                log('Connecting...');
-
-                conn.onopen = function() {
-                    log('Connected.');
-                    update_ui();
-                };
-                conn.onmessage = function(e) {
-                    log('Received: ' + e.data);
-                };
-                conn.onclose = function() {
-                    log('Disconnected.');
-                    conn = null;
-                    update_ui();
-                };
-            }
-
-            function disconnect() {
-                if (conn != null) {
-                    log('Disconnecting...');
-                    conn.close();
-                    conn = null;
-                    update_ui();
-                }
-            }
-
-            function update_ui() {
-                var msg = '';
-                if (conn == null) {
-                    $('#status').text('disconnected');
-                    $('#connect').html('Connect');
-                } else {
-                    $('#status').text('connected (' + conn.protocol + ')');
-                    $('#connect').html('Disconnect');
-                }
-            }
-
-            $('#connect').click(function() {
-                if (conn == null) {
-                    connect();
-                } else {
-                    disconnect();
-                }
-                update_ui();
-                return false;
-            });
-
-            $('#send').click(function() {
-                var text = $('#text').val();
-                log('Sending: ' + text);
-                conn.send(text);
-                $('#text').val('').focus();
-                return false;
-            });
-
-            $('#text').keyup(function(e) {
-                if (e.keyCode === 13) {
-                $('#send').click();
-                return false;
-                }
-            });
-        });
-    </script>
+    <script src="/assets/home.js"></script>
 
 {% endblock %}

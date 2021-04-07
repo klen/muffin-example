@@ -1,35 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
-
-    <meta charset="UTF-8">
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Muffin Application</title>
 
     {% block base_css %}
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-      <link rel="stylesheet" href="{{app.cfg.STATIC_PREFIX}}/app.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     {% endblock %}
 
   </head>
   <body>
 
-    {% include "navbar.html" %}
-
     <div class="container">
 
-      {% block base_content %}
-        <h1> Hello {{user and user.username or 'anonimous' }} </h1>
-        <b> The application {{ MUFFIN }}</b>
-      {% endblock %}
+        {% include "navbar.html" %}
 
-      {% block base_js %}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-      {% endblock %}
+        {% block base_content %}
+            <h1> Hello {{user and user.username or 'anonimous' }} </h1>
+            <b> This is an example application {{ MUFFIN }}</b>
+        {% endblock %}
+
+        {% block base_js %}
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+        {% endblock %}
 
     </div>
 

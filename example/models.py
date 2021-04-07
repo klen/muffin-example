@@ -2,24 +2,24 @@
 
 import datetime as dt
 
+import hmac
+import random
 import peewee as pw
+import hashlib
 
-from example import app
-from muffin.utils import generate_password_hash, check_password_hash
+from . import db
 
 
-@app.ps.peewee.register
+@db.register
 class Test(pw.Model):
-
-    """ A simple model. """
+    """A simple model."""
 
     data = pw.CharField()
 
 
-@app.ps.peewee.register
+@db.register
 class User(pw.Model):
-
-    """ Implement application's users. """
+    """Implement application's users."""
 
     created = pw.DateTimeField(default=dt.datetime.now)
     username = pw.CharField()
@@ -27,24 +27,23 @@ class User(pw.Model):
     password = pw.CharField()
     is_super = pw.BooleanField(default=False)
 
-    def __unicode__(self):
-        return self.email
-
-    @property
-    def pk(self):
-        return self.id
-
-    def set_password(self, password):
-        self.password = generate_password_hash(password)
+    @classmethod
+    def generate_password(cls, password, digestmod='sha256', salt_length=8):
+        """Hash a password with given method and salt length."""
+        salt = ''.join(random.sample('1234567890ABCDEFGabcdefg', salt_length))
+        signature = create_signature(salt, password, digestmod=digestmod)
+        return '$'.join((digestmod, salt, signature))
 
     def check_password(self, password):
-        return check_password_hash(password, self.password)
+        """Check the given password."""
+        digestmod, salt, signature = self.password.split('$', 2)
+        return hmac.compare_digest(
+            signature, create_signature(salt, password, digestmod=digestmod))
 
 
-@app.ps.peewee.register
+@db.register
 class Token(pw.Model):
-
-    """ Store OAuth tokens. """
+    """Store OAuth tokens."""
 
     provider = pw.CharField()
     token = pw.CharField()
@@ -53,7 +52,31 @@ class Token(pw.Model):
     user = pw.ForeignKeyField(User)
 
     class Meta:
+        """Tune the model."""
+
         indexes = (('token', 'provider'), True),
 
-    def __unicode__(self):
-        return self.provider
+
+@db.register
+class Message(pw.Model):
+    """Store user messages."""
+
+    created = pw.DateTimeField(default=dt.datetime.utcnow)
+    content = pw.CharField()
+    user = pw.ForeignKeyField(User, null=True)
+
+
+def create_signature(secret, value, digestmod='sha256', encoding='utf-8'):
+    """Create HMAC Signature from secret for value."""
+    if isinstance(secret, str):
+        secret = secret.encode(encoding)
+
+    if isinstance(value, str):
+        value = value.encode(encoding)
+
+    if isinstance(digestmod, str):
+        digestmod = getattr(hashlib, digestmod, hashlib.sha1)
+
+    hm = hmac.new(secret, digestmod=digestmod)
+    hm.update(value)
+    return hm.hexdigest()
