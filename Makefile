@@ -44,3 +44,9 @@ run: $(VIRTUAL_ENV)
 shell: $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug shell
 
+.PHONY: docker
+docker:
+	docker build -f $(CURDIR)/devops/Dockerfile -t muffin-example:latest $(CURDIR)
+
+docker-run: docker
+	@docker run --rm -it -p 5000:8080 --name muffin-example muffin-example:latest $(RUN)
