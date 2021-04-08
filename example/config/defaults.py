@@ -11,7 +11,7 @@ STATIC_URL_PREFIX: str = '/assets'
 
 
 # Muffin-Jinja options
-JINJA2_TEMPLATE_FOLDERS: str = ROOT / 'templates',
+JINJA2_TEMPLATE_FOLDERS: str = [ROOT / 'templates']
 
 # Muffin-OAuth options
 OAUTH_CLIENTS = {
