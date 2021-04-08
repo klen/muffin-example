@@ -1,6 +1,6 @@
 # Example Muffin Application
 
-![](https://raw.github.com/klen/muffin/develop/docs/static/logo-h200.png | width=100)
+![](https://raw.github.com/klen/muffin/develop/docs/static/logo-h200.png)
 
 [![Tests Status](https://github.com/klen/muffin-example/workflows/tests/badge.svg)](https://github.com/klen/muffin-example/actions)
 
