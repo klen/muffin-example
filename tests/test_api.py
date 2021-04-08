@@ -8,7 +8,6 @@ async def test_messages(client, mixer, user):
     assert res.status_code == 200
     json = await res.json()
     assert json
-    breakpoint()
     assert len(json) == 3
 
     res = await client.post('/api/messages', json={'content': 'example message'})
@@ -22,6 +21,7 @@ async def test_messages(client, mixer, user):
     assert res.status_code == 200
     json = await res.json()
     assert json['id']
-    assert json['user'] == str(user.id)
+    assert json['user']
+    assert json['user']['id'] == str(user.id)
 
 
