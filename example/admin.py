@@ -1,5 +1,6 @@
 """Setup admin interface."""
 
+from muffin import ResponseRedirect
 from muffin_admin import Plugin as Admin, PWAdminHandler
 
 from . import app, session
@@ -15,6 +16,8 @@ async def authorize(request):
     user = await session.load_user(request)
     if user and user.is_super:
         return user
+
+    raise ResponseRedirect('/')
 
 
 @admin.get_identity

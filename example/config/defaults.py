@@ -31,7 +31,6 @@ SESSION_SECRET_KEY = 'Example-Secret'
 SESSION_AUTO_MANAGE = True
 
 # Muffin-Admin options
-ADMIN_LOGIN_URL = '/'
 ADMIN_LOGOUT_URL = '/logout'
 ADMIN_CUSTOM_CSS_URL = '/assets/admin.css'
 ADMIN_AUTH_STORAGE = 'cookies'
