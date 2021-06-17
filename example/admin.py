@@ -31,6 +31,15 @@ async def ident(request):
         }
 
 
+@admin.dashboard
+async def dashboard(request):
+    """Render a simple dashboard."""
+    return [[{
+        'title': 'app config',
+        'value': [(k, str(v)) for k, v in app.cfg],
+    }]]
+
+
 @admin.route
 class UsersAdmin(PWAdminHandler):
     """Manage users."""

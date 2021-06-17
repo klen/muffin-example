@@ -49,4 +49,4 @@ docker:
 	docker build -f $(CURDIR)/devops/Dockerfile -t muffin-example:latest $(CURDIR)
 
 docker-run: docker
-	@docker run --rm -it -p 5000:8080 --name muffin-example muffin-example:latest $(RUN)
+	@docker run --rm -it -p 5000:80 --env GWORKERS=1 --name muffin-example muffin-example:latest $(RUN)
