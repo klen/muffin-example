@@ -40,7 +40,7 @@ class Messages(PWRESTHandler):
     async def prepare_collection(self, request):
         """Order messages by id."""
         return Message.select(Message, User).join(
-            User, 'LEFT OUTER JOIN').order_by(Message.id.desc())
+            User, 'LEFT OUTER JOIN').order_by(Message.id)
 
     async def load(self, request, resource: Message = None) -> Message:
         """Bind user to the message and send notify to sockets."""
