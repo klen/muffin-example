@@ -36,11 +36,11 @@ jobs:
         # (Optional, default: "./")
         # Dockerfile directory.
         # For example, if you have a Dockerfile in the root of your project, leave it as follows:
-        dockerfile_directory: ./devops
+        dockerfile_directory: ./
 
         # (Optional, default: "Dockerfile")
         # Dockerfile name.
-        dockerfile_name: Dockerfile
+        dockerfile_name: ./devops/Dockerfile
 
         # (Optional, default: "")
         # Additional options of docker build command.
