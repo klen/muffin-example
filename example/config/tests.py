@@ -7,5 +7,6 @@ from .defaults import *     # noqa
 DEBUG = True
 
 # Muffin-Peewee
-PEEWEE_CONNECTION = 'sqlite:///:memory:'
+PEEWEE_CONNECTION = 'sqlite+async:///:memory:'
+PEEWEE_MANAGE_CONNECTIONS = False
 PEEWEE_CONNECTION_PARAMS = {}
