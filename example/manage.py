@@ -25,8 +25,8 @@ async def example_users():
     async with db.connection():
 
         await User.get_or_create(email='user@muffin.io', defaults={
-            'password': User.generate_password('pass'),
+            'username': 'user', 'password': User.generate_password('pass'),
         })
         await User.get_or_create(email='admin@muffin.io', defaults={
-            'password': User.generate_password('pass'), 'is_super': True,
+            'username': 'admin', 'password': User.generate_password('pass'), 'is_super': True,
         })
