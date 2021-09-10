@@ -36,7 +36,9 @@ async def dashboard(request):
     """Render a simple dashboard."""
     return [[{
         'title': 'app config',
-        'value': [(k, str(v)) for k, v in app.cfg],
+        'value': [
+            (k, str(v)) for k, v in app.cfg
+            if k not in {'OAUTH_CLIENTS', 'SESSION_SECRET_KEY'}],
     }]]
 
 
@@ -48,6 +50,7 @@ class UsersAdmin(PWAdminHandler):
         """Tune the handler."""
 
         icon = "People"
+        create = edit = delete = False
 
         model = User
         filters = 'email', 'is_super'
