@@ -24,7 +24,7 @@ OAUTH_CLIENTS = {
 
 # Muffin-Peewee options
 PEEWEE_MIGRATIONS_PATH = ROOT.parent / 'migrations'
-PEEWEE_CONNECTION = f"aiosqlite:///{ROOT.parent / 'example.sqlite'}"
+PEEWEE_CONNECTION = f"aiosqlite://{ROOT.parent / 'example.sqlite'}"
 
 # Muffin-Session options
 SESSION_SECRET_KEY = 'Example-Secret'
