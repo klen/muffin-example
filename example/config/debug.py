@@ -1,7 +1,7 @@
 # Import the project's settings
 from .defaults import *
 
-PEEWEE_CONNECTION = 'sqlite+async:///example.sqlite'
+PEEWEE_CONNECTION = 'aiosqlite:///example.sqlite'
 OAUTH_CLIENTS = {
     'github': {
         'client_id': 'b6281b6fe88fa4c313e6',

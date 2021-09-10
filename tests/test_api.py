@@ -3,7 +3,9 @@ async def test_messages(client, mixer, user):
     assert res.status_code == 200
     assert await res.json() == []
 
-    mixer.cycle(3).blend('example.models.Message', user=user)
+    for msg in mixer.cycle(3).blend('example.models.Message', user=user):
+        await msg.save(force_insert=True)
+
     res = await client.get('/api/messages')
     assert res.status_code == 200
     json = await res.json()

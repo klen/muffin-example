@@ -8,9 +8,9 @@ from example.models import User, Token
 
 # Setup function to load users from sessions
 @session.user_loader
-def get_user(user_id):
+async def get_user(user_id):
     """Register a user's loader for sessions."""
-    return User.select().where(User.id == user_id).first()
+    return await User.select().where(User.id == user_id).first()
 
 
 # app.route supports any regexp in paths
@@ -18,7 +18,7 @@ def get_user(user_id):
 async def login(request):
     """Login a user."""
     data = request.url.query or await request.form()
-    user = User.select().where(User.email == data.get('email')).first()
+    user = await User.select().where(User.email == data.get('email')).first()
     if user and user.check_password(data.get('password')):
         session.login(request, user.id)
 
@@ -37,14 +37,14 @@ async def login_with_github(request):
     """Login with Github."""
     client, data, raw = await oauth.login('github', request)
     try:
-        token = Token.select().where(Token.token == client.access_token).get()
+        token = await Token.select().where(Token.token == client.access_token).get()
         user = token.user
     except Exception:
         info = await client.request('GET', 'user')
-        user, _ = User.get_or_create(email=info['email'], defaults=dict(
+        user, _ = await User.get_or_create(email=info['email'], defaults=dict(
             password='NULL', username=info['login']))
 
-        token, _ = Token.get_or_create(
+        token, _ = await Token.get_or_create(
             user=user, provider='github', defaults=dict(token=client.access_token))
 
     session.login(request, user.id)

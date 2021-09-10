@@ -11,14 +11,14 @@ from . import db
 
 
 @db.register
-class Test(pw.Model):
+class Test(db.Model):
     """A simple model."""
 
     data = pw.CharField()
 
 
 @db.register
-class User(pw.Model):
+class User(db.Model):
     """Implement application's users."""
 
     created = pw.DateTimeField(default=dt.datetime.now)
@@ -42,7 +42,7 @@ class User(pw.Model):
 
 
 @db.register
-class Token(pw.Model):
+class Token(db.Model):
     """Store OAuth tokens."""
 
     provider = pw.CharField()
@@ -58,7 +58,7 @@ class Token(pw.Model):
 
 
 @db.register
-class Message(pw.Model):
+class Message(db.Model):
     """Store user messages."""
 
     created = pw.DateTimeField(default=dt.datetime.utcnow)

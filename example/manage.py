@@ -1,6 +1,6 @@
 """Setup the application's CLI commands."""
 
-from example import app
+from example import app, db
 
 
 @app.manage
@@ -18,13 +18,15 @@ def hello(name, upper=False):
 
 
 @app.manage
-def example_users():
+async def example_users():
     """Create users for the example."""
-    from mixer.backend.peewee import Mixer
     from example.models import User
 
-    mixer = Mixer(commit=True)
-    mixer.guard(User.email == 'user@muffin.io').blend(
-        User, email='user@muffin.io', password=User.generate_password('pass'))
-    mixer.guard(User.email == 'admin@muffin.io').blend(
-        User, email='admin@muffin.io', password=User.generate_password('pass'), is_super=True)
+    async with db.connection():
+
+        await User.get_or_create(email='user@muffin.io', defaults={
+            'password': User.generate_password('pass'),
+        })
+        await User.get_or_create(email='admin@muffin.io', defaults={
+            'password': User.generate_password('pass'), 'is_super': True,
+        })

@@ -1,6 +1,3 @@
-from mixer.backend.peewee import Mixer
-
-
 async def test_config(app):
     assert app.cfg.CONFIG == 'example.config.tests'
 

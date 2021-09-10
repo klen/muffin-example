@@ -3,12 +3,12 @@ uvicorn[standard]
 
 aiofile
 muffin                  >= 0.65.0
-muffin-admin[peewee]    >= 0.22.2
-muffin-jinja2           >= 0.10.1
-muffin-oauth            >= 0.9.4
-muffin-peewee           >= 1.7.5
-muffin-rest             >= 2.6.1
-muffin-session          >= 0.10.12
+muffin-admin[peewee]    >= 0.27.1
+muffin-jinja2           >= 1.3.0
+muffin-oauth            >= 2.1.0
+muffin-peewee-aio       >= 0.0.9
+muffin-rest             >= 3.4.0
+muffin-session          >= 1.1.1
 
 mixer
 pytest
