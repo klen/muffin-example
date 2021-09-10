@@ -5,7 +5,7 @@
 
 import muffin
 
-from example import app, jinja2, session, WEB_SOCKETS
+from example import app, db, jinja2, session, WEB_SOCKETS
 
 
 @app.route('/')
@@ -20,6 +20,10 @@ async def websocket(request):
     """Process websockets."""
     user = await session.load_user(request)
     user = user and user.email or 'anonimous'
+
+    # Release current connection (from peewee middleware)
+    await db.connection(False).release()
+
     ws = muffin.ResponseWebSocket(request)
     await ws.accept()
 
