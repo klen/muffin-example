@@ -3,7 +3,7 @@ uvicorn[standard]
 
 aiofile
 aiosqlite
-muffin                  >= 0.65.0
+muffin                  >= 0.86
 muffin-admin[peewee]    >= 0.27.1
 muffin-jinja2           >= 1.3.0
 muffin-oauth            >= 2.1.0

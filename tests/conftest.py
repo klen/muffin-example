@@ -31,7 +31,7 @@ async def db(app):
 async def trans(app, db):
     """Rollback DB after every test."""
     db = app.plugins['peewee']
-    async with db.transaction() as trans:
+    async with db.transaction(silent=True) as trans:
         yield db
         await trans.rollback()
 

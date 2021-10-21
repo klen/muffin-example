@@ -22,7 +22,7 @@ async def websocket(request):
     user = user and user.email or 'anonimous'
 
     # Release current connection (from peewee middleware)
-    await db.connection(False).release()
+    await db.current_conn.release()
 
     ws = muffin.ResponseWebSocket(request)
     await ws.accept()

@@ -31,3 +31,8 @@ async def test_login_logout(client, user):
     assert response.status_code == 200
     text = await response.text()
     assert "Hello anonimous" in text
+
+
+async def test_ws(client):
+    async with client.websocket('/ws') as ws:
+        assert ws
