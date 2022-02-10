@@ -5,31 +5,31 @@
 
 import muffin
 
-from example import app, db, jinja2, session, WEB_SOCKETS
+from example import WEB_SOCKETS, app, db, jinja2, session
 
 
-@app.route('/')
+@app.route("/")
 async def index(request):
     """Get a current logged user and render a template to HTML."""
     user = await session.load_user(request)
-    return await jinja2.render('index.html', user=user, view='index')
+    return await jinja2.render("index.html", user=user, view="index")
 
 
-@app.route('/ws')
+@app.route("/ws")
 async def websocket(request):
     """Process websockets."""
     user = await session.load_user(request)
-    user = user and user.email or 'anonimous'
+    user = user and user.email or "anonimous"
 
     # Release current connection (from peewee middleware)
-    await db.current_conn.release()
+    await db.manager.current_conn.release()
 
     ws = muffin.ResponseWebSocket(request)
     await ws.accept()
 
     # Notify connected users
     for ws_ in WEB_SOCKETS:
-        await ws_.send_json({'type': 'join', 'data': user})
+        await ws_.send_json({"type": "join", "data": user})
 
     WEB_SOCKETS.append(ws)
 
@@ -40,7 +40,7 @@ async def websocket(request):
 
     # Notify connected users
     for ws_ in WEB_SOCKETS:
-        await ws_.send_json({'type': 'disconnect', 'data': user})
+        await ws_.send_json({"type": "disconnect", "data": user})
 
     # Close socket
     await ws.close()
