@@ -26,9 +26,9 @@ CI covers 3.11–3.15.
 - `tests/` — pytest + pytest-aio. `conftest.py` provides `app`, `client`, `db`, `mixer`,
   `user`, `admin` fixtures; `example/config/tests.py` switches Peewee to in-memory sqlite.
 - `main.py` — imports the app for old ASGI deployments; Docker uses `example:app` instead.
-- `devops/Dockerfile` + `.github/workflows/` — Heroku image (base
-  `horneds/muffin:latest`, installs the project with `uv pip install --system`) and the
-  deploy workflow. Dependabot auto-merges minor and critical (CVSS >= 9) dependency PRs
+- `devops/Dockerfile` + `.github/workflows/` — container image (base
+  `horneds/muffin:latest`, installs the project with `uv pip install --system`) and CI
+  workflows. Dependabot auto-merges minor and critical (CVSS >= 9) dependency PRs
   with a squash merge once `tests` is green; other updates stay manual.
 - `Makefile` — `sync`, `test`, `db`, `run`, `shell`, `clean`, `docker`, `docker-run`; all
   Python targets go through `uv run`.
@@ -39,9 +39,8 @@ CI covers 3.11–3.15.
 - `make run` / `make db` — run every migration and seed `user@muffin.io` /
   `admin@muffin.io` (password `pass`) into `example.sqlite`; `run` also starts uvicorn on
   port 5000 with reload. CLI commands are hyphenated: `peewee-migrate`, `example-users`.
-- Pushing to `main` or `develop` triggers `.github/workflows/tests.yml`, and
-  `heroku.yml` deploys the image to `https://muffin-py.herokuapp.com` when tests pass.
-  Commit/push only when explicitly asked; never push just to test.
+- Pushing to `main` or `develop` triggers `.github/workflows/tests.yml`. Commit/push
+  only when explicitly asked; never push just to test.
 - `git checkout -- .` / `git reset --hard` discards the local edits in `Makefile` and
   `example/config/defaults.py`. Check `git -C . status` first and preserve them.
 - `make docker` / `make docker-run` build from the latest public Muffin image and bind
@@ -88,7 +87,7 @@ manual visit to `/`, `/api/messages` and `/admin` is the end-to-end smoke check.
 
 - Generated/stale: `.venv/`, `.tox/`, `.mypy_cache/`, `.pytest_cache/`,
   `muffin_example.egg-info/`, `build/`, `dist/`, `__pycache__/`, `example.sqlite`.
-- `devops/`, `.github/workflows/heroku.yml` — deployment paths; ask before touching.
+- `devops/` — container image; ask before touching.
 - `example/config/debug.py` contains a committed GitHub OAuth client secret; don't copy
   secrets into new files or logs.
 
@@ -98,4 +97,4 @@ manual visit to `/`, `/api/messages` and `/admin` is the end-to-end smoke check.
   behaviour; this repo has no lint/type safety net.
 - Check `git -C . status` first and leave the pre-existing local edits alone.
 - Use `uv run ...` for every Python command so the locked environment is used.
-- Do not start Docker, run Heroku/deploy workflows, or commit/push unless explicitly asked.
+- Do not start Docker or commit/push unless explicitly asked.
