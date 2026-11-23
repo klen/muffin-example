@@ -21,7 +21,7 @@ class Test(db.Model):
 class User(db.Model):
     """Implement application's users."""
 
-    created = pw.DateTimeField(default=dt.datetime.now)
+    created = pw.DateTimeField(default=lambda: dt.datetime.now(dt.UTC))
     username = pw.CharField()
     email = pw.CharField(unique=True)
     password = pw.CharField()
@@ -61,7 +61,7 @@ class Token(db.Model):
 class Message(db.Model):
     """Store user messages."""
 
-    created = pw.DateTimeField(default=dt.datetime.utcnow)
+    created = pw.DateTimeField(default=lambda: dt.datetime.now(dt.UTC))
     content = pw.CharField()
     user = pw.ForeignKeyField(User, null=True)
 

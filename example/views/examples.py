@@ -17,7 +17,7 @@ async def json(request):
     return {'json': 'here'}
 
 
-@app.on_error(muffin.ASGINotFound)
+@app.on_error(muffin.ASGINotFoundError)
 async def handle404(request):
     """Setup custom 404 page."""
     return muffin.Response('Custom 404 Page', status_code=404)

@@ -2,12 +2,9 @@ import pytest
 from mixer.backend.peewee import Mixer
 
 
-@pytest.fixture(params=[
-    pytest.param(('asyncio', {'use_uvloop': False}), id='asyncio'),
-    #  'trio',
-], scope='session')
+@pytest.fixture(params=["asyncio"], scope="session")
 def aiolib(request):
-    """Test the example with asyncio and trio."""
+    """Run the example tests with asyncio only."""
     return request.param
 
 
@@ -22,7 +19,7 @@ def setup_logging():
 @pytest.fixture(autouse=True, scope='session')
 async def db(app):
     async with app.plugins['peewee'] as db:
-        async with db.manager.connection(False):
+        async with db.connection():
             await db.create_tables()
             yield db
 

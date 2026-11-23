@@ -9,7 +9,7 @@ The application is deployed on Heroku: https://muffin-py.herokuapp.com
 
 ## Run locally
 
-Run the example locally with command:
+Install [uv](https://docs.astral.sh/uv/) and run:
 
     $ make run
 
@@ -17,6 +17,9 @@ And open http://localhost:5000 in your browser.
 
 ## Run tests
 
-Run tests with command:
-
     $ make test
+
+Or directly:
+
+    $ uv sync --locked
+    $ uv run pytest tests

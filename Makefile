@@ -1,6 +1,5 @@
-VIRTUAL_ENV ?= env
-
-all: $(VIRTUAL_ENV)
+.PHONY: all help
+all: sync
 
 .PHONY: help
 # target: help - Display callable targets
@@ -8,41 +7,42 @@ help:
 	@egrep "^# target:" [Mm]akefile
 
 .PHONY: clean
-# target: clean - Display callable targets
+# target: clean - Remove build artefacts
 clean:
 	rm -rf build/ dist/ docs/_build *.egg-info
 	find $(CURDIR) -name "*.py[co]" -delete
 	find $(CURDIR) -name "*.orig" -delete
-	find $(CURDIR)/$(MODULE) -name "__pycache__" | xargs rm -rf
+	find $(CURDIR) -name "__pycache__" -type d -prune -exec rm -rf {} +
 
 # =============
 #  Development
 # =============
 
-$(VIRTUAL_ENV): requirements.txt
-	@[ -d $(VIRTUAL_ENV) ] || python -m venv $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/pip install -e .
-	@touch $(VIRTUAL_ENV)
+.PHONY: sync
+# target: sync - Install/sync dependencies with uv
+sync:
+	uv sync --locked
 
 .PHONY: t test
 # target: test - Runs tests
-t test: $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/pytest -xsv tests
+t test: sync
+	uv run pytest tests
 
 .PHONY: db
-db:
-	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug pw_migrate
-	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug example_users
+# target: db - Apply migrations and create example users
+db: sync
+	uv run muffin example --config=example.config.debug peewee-migrate
+	uv run muffin example --config=example.config.debug example-users
 
 .PHONY: run
-run: $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug pw_migrate
-	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug example_users
-	@$(VIRTUAL_ENV)/bin/uvicorn --reload --reload-dir $(CURDIR)/example --port 5000 example:app
+# target: run - Run the application on port 5000
+run: db
+	uv run uvicorn --reload --reload-dir $(CURDIR)/example --port 5000 example:app
 
 .PHONY: shell
-shell: $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/muffin example --config=example.config.debug shell
+# target: shell - Open the application shell
+shell: sync
+	uv run muffin example --config=example.config.debug shell
 
 .PHONY: docker
 docker:

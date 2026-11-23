@@ -1,4 +1,4 @@
 echo "* Setup application"
 
-muffin example pw_migrate
-muffin example example_users
+muffin example peewee-migrate
+muffin example example-users

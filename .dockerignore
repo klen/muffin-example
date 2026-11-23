@@ -1,2 +1,12 @@
+.git
+.venv
+.tox
+.mypy_cache
+.pytest_cache
+__pycache__
+*.py[co]
+build
+dist
+*.egg-info
 /example.sqlite
 /env

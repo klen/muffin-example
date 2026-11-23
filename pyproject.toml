@@ -1,0 +1,61 @@
+[project]
+name = "muffin-example"
+version = "0.2.0"
+description = "Example chat application for Muffin Framework"
+authors = [{ name = "Kirill Klenov", email = "horneds@gmail.com" }]
+requires-python = ">=3.11"
+readme = "README.md"
+license = "MIT"
+keywords = ["muffin", "example", "asyncio", "trio", "asgi"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
+  "Framework :: AsyncIO",
+  "Framework :: Trio",
+]
+dependencies = [
+  "gunicorn",
+  "uvicorn[standard]",
+  "aiofile",
+  "aiosqlite",
+  "muffin>=3.3.0",
+  "muffin-admin[peewee]>=13.8.0",
+  "muffin-jinja2>=1.11.0",
+  "muffin-oauth>=2.11.0",
+  "muffin-peewee-aio[aiosqlite]>=4.0.3",
+  "muffin-rest[peewee]>=17.0.0",
+  "muffin-session>=2.7.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/klen/muffin-example"
+Repository = "https://github.com/klen/muffin-example"
+"Issue tracker" = "https://github.com/klen/muffin-example/issues"
+
+[dependency-groups]
+dev = [
+  "mixer",
+  "pytest",
+  "pytest-aio[trio]",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.6,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "example"
+module-root = ""
+
+[tool.pytest.ini_options]
+addopts = "-xsv"
+muffin_app = "example"
+muffin_config = "example.config.tests"
